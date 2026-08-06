@@ -1,0 +1,1 @@
+Our backend uses FastAPI, PostgreSQL, Redis, Docker, Kubernetes and OpenAI Whisper for speech recognition.

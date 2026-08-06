@@ -1,0 +1,3 @@
+The project uses JSON, REST API, SQL, HTML, CSS and JavaScript.
+
+All responses are returned in JSON format.
