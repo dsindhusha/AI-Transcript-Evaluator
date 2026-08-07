@@ -1,0 +1,82 @@
+[
+    {
+        "id": "tc1",
+        "description": "Proper noun spelling errors",
+        "audio_file": "audio/tc1.wav",
+        "ground_truth": "ground_truth/tc1.txt",
+        "generated_transcript": "generated/tc1.txt",
+        "evaluation_report": "reports/tc1.json"
+    },
+    {
+        "id": "tc2",
+        "description": "Perfect transcript match",
+        "audio_file": "audio/tc2.wav",
+        "ground_truth": "ground_truth/tc2.txt",
+        "generated_transcript": "generated/tc2.txt",
+        "evaluation_report": "reports/tc2.json"
+    },
+    {
+        "id": "tc3",
+        "description": "Equivalent formatting and punctuation",
+        "audio_file": "audio/tc3.wav",
+        "ground_truth": "ground_truth/tc3.txt",
+        "generated_transcript": "generated/tc3.txt",
+        "evaluation_report": "reports/tc3.json"
+    },
+    {
+        "id": "tc4",
+        "description": "Equivalent date, time, and currency expressions",
+        "audio_file": "audio/tc4.wav",
+        "ground_truth": "ground_truth/tc4.txt",
+        "generated_transcript": "generated/tc4.txt",
+        "evaluation_report": "reports/tc4.json"
+    },
+    {
+        "id": "tc5",
+        "description": "Incorrect numerical values",
+        "audio_file": "audio/tc5.wav",
+        "ground_truth": "ground_truth/tc5.txt",
+        "generated_transcript": "generated/tc5.txt",
+        "evaluation_report": "reports/tc5.json"
+    },
+    {
+        "id": "tc6",
+        "description": "Missing information",
+        "audio_file": "audio/tc6.wav",
+        "ground_truth": "ground_truth/tc6.txt",
+        "generated_transcript": "generated/tc6.txt",
+        "evaluation_report": "reports/tc6.json"
+    },
+    {
+        "id": "tc7",
+        "description": "Conflicting information",
+        "audio_file": "audio/tc7.wav",
+        "ground_truth": "ground_truth/tc7.txt",
+        "generated_transcript": "generated/tc7.txt",
+        "evaluation_report": "reports/tc7.json"
+    },
+    {
+        "id": "tc8",
+        "description": "Extra information in generated transcript",
+        "audio_file": "audio/tc8.wav",
+        "ground_truth": "ground_truth/tc8.txt",
+        "generated_transcript": "generated/tc8.txt",
+        "evaluation_report": "reports/tc8.json"
+    },
+    {
+        "id": "tc9",
+        "description": "Mixed transcription errors",
+        "audio_file": "audio/tc9.wav",
+        "ground_truth": "ground_truth/tc9.txt",
+        "generated_transcript": "generated/tc9.txt",
+        "evaluation_report": "reports/tc9.json"
+    },
+    {
+        "id": "tc10",
+        "description": "Equivalent semantic expressions",
+        "audio_file": "audio/tc10.wav",
+        "ground_truth": "ground_truth/tc10.txt",
+        "generated_transcript": "generated/tc10.txt",
+        "evaluation_report": "reports/tc10.json"
+    }
+]
