@@ -3,7 +3,12 @@ from pathlib import Path
 
 from app.services.scoring_service import ScoringService
 
+
 def main():
+    """
+    Recalculates and updates the evaluation scores
+    for all report files in the dataset.
+    """
 
     reports_folder = Path("dataset/reports")
 

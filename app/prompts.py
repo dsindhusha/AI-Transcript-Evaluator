@@ -1,3 +1,7 @@
+# Prompt used by the Gemini model to evaluate a generated transcript
+# against the corresponding ground truth transcript.
+
+
 EVALUATION_PROMPT = """
 You are an expert Speech-to-Text Evaluation System.
 

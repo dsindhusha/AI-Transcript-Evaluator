@@ -9,8 +9,16 @@ load_dotenv()
 
 
 class GeminiService:
+    """
+    Handles interactions with the Google Gemini API for
+    generating transcript evaluation responses.
+    """
 
     def __init__(self):
+        """
+        Initializes the Gemini client using the API key
+        loaded from the environment variables.
+        """
 
         api_key = os.getenv("GEMINI_API_KEY")
 
@@ -25,6 +33,17 @@ class GeminiService:
         self,
         prompt: str
     ) -> str:
+        """
+        Sends the evaluation prompt to the Gemini model and
+        returns the generated response. The request is retried
+        up to three times in case of temporary failures.
+
+        Args:
+            prompt: The evaluation prompt sent to the Gemini model.
+
+        Returns:
+            The generated response as a string.
+        """
 
         max_attempts = 3
 

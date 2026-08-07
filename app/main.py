@@ -4,7 +4,12 @@ from app.services.evaluator_service import EvaluatorService
 from app.services.report_service import ReportService
 from app.services.scoring_service import ScoringService
 
+
 def main():
+    """
+    Evaluates all transcript pairs in the dataset, calculates
+    their scores, and saves the evaluation reports.
+    """
 
     evaluator = EvaluatorService()
     report_service = ReportService()

@@ -30,6 +30,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Enable Cross-Origin Resource Sharing (CORS) for the frontend.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -48,6 +49,9 @@ whisper = WhisperService()
 
 @app.get("/")
 def home():
+    """
+    Returns a welcome message indicating that the API is running.
+    """
 
     return {
         "message": "AI Transcript Evaluator API is running successfully!"
@@ -56,6 +60,9 @@ def home():
 
 @app.get("/health")
 def health():
+    """
+    Returns the current health status of the application.
+    """
 
     return {
         "status": "healthy"
@@ -67,6 +74,15 @@ def health():
     response_model=TranscriptionResponse
 )
 async def transcribe(file: UploadFile = File(...)):
+    """
+    Generates a transcript from an uploaded audio file.
+
+    Args:
+        file: Audio file uploaded by the user.
+
+    Returns:
+        The generated transcript.
+    """
 
     temp_path = None
 
@@ -108,6 +124,15 @@ async def transcribe(file: UploadFile = File(...)):
     response_model=EvaluationResponse
 )
 def evaluate(request: EvaluationRequest):
+    """
+    Evaluates a generated transcript against the ground truth transcript.
+
+    Args:
+        request: Request containing the ground truth and generated transcripts.
+
+    Returns:
+        Evaluation report with score and score breakdown.
+    """
 
     try:
 
@@ -142,6 +167,18 @@ async def evaluate_audio(
     file: UploadFile = File(...),
     ground_truth: str = Form(...)
 ):
+    """
+    Transcribes the uploaded audio and evaluates it against
+    the provided ground truth transcript.
+
+    Args:
+        file: Audio file uploaded by the user.
+        ground_truth: Reference transcript for evaluation.
+
+    Returns:
+        Generated transcript, overall score, score breakdown,
+        and detailed evaluation results.
+    """
 
     temp_path = None
 

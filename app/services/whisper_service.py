@@ -4,8 +4,14 @@ from faster_whisper import WhisperModel
 
 
 class WhisperService:
+    """
+    Handles speech-to-text transcription using the Faster Whisper model.
+    """
 
     def __init__(self):
+        """
+        Loads the Faster Whisper model for audio transcription.
+        """
 
         print("Loading Whisper model...")
 
@@ -22,6 +28,17 @@ class WhisperService:
         audio_path: Path,
         output_path: Path | None = None
     ) -> str:
+        """
+        Transcribes an audio file and optionally saves the
+        generated transcript to a text file.
+
+        Args:
+            audio_path: Path to the input audio file.
+            output_path: Optional path to save the generated transcript.
+
+        Returns:
+            The generated transcript as a string.
+        """
 
         segments, info = self.model.transcribe(
             str(audio_path),
