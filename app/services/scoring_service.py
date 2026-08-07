@@ -8,14 +8,61 @@ class ScoringService:
 
     def calculate_score(self, report: dict) -> int:
 
-        score = 100
+        breakdown = self.get_score_breakdown(report)
 
-        score -= len(report["missing_information"]) * MISSING_PENALTY
+        return breakdown["final_score"]
 
-        score -= len(report["incorrect_information"]) * INCORRECT_PENALTY
+    def get_score_breakdown(self, report: dict) -> dict:
 
-        score -= len(report["conflicting_information"]) * CONFLICTING_PENALTY
+        starting_score = 100
 
-        score -= len(report["extra_information"]) * EXTRA_PENALTY
+        missing_count = len(report["missing_information"])
+        incorrect_count = len(report["incorrect_information"])
+        conflicting_count = len(report["conflicting_information"])
+        extra_count = len(report["extra_information"])
 
-        return max(score, 0)
+        missing_deduction = missing_count * MISSING_PENALTY
+        incorrect_deduction = incorrect_count * INCORRECT_PENALTY
+        conflicting_deduction = conflicting_count * CONFLICTING_PENALTY
+        extra_deduction = extra_count * EXTRA_PENALTY
+
+        final_score = (
+            starting_score
+            - missing_deduction
+            - incorrect_deduction
+            - conflicting_deduction
+            - extra_deduction
+        )
+
+        final_score = max(final_score, 0)
+
+        return {
+
+            "starting_score": starting_score,
+
+            "missing": {
+                "count": missing_count,
+                "penalty": MISSING_PENALTY,
+                "deduction": missing_deduction
+            },
+
+            "incorrect": {
+                "count": incorrect_count,
+                "penalty": INCORRECT_PENALTY,
+                "deduction": incorrect_deduction
+            },
+
+            "conflicting": {
+                "count": conflicting_count,
+                "penalty": CONFLICTING_PENALTY,
+                "deduction": conflicting_deduction
+            },
+
+            "extra": {
+                "count": extra_count,
+                "penalty": EXTRA_PENALTY,
+                "deduction": extra_deduction
+            },
+
+            "final_score": final_score
+        }

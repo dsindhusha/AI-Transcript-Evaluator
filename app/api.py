@@ -77,9 +77,11 @@ def evaluate(request: EvaluationRequest):
         request.generated
     )
 
-    score = scoring.calculate_score(report)
+    score_breakdown = scoring.get_score_breakdown(report)
 
-    report["score"] = score
+    report["score"] = score_breakdown["final_score"]
+
+    report["score_breakdown"] = score_breakdown
 
     return report
 
@@ -114,11 +116,12 @@ async def evaluate_audio(
         generated_transcript
     )
 
-    score = scoring.calculate_score(report)
+    score_breakdown = scoring.get_score_breakdown(report)
 
     return {
         "generated_transcript": generated_transcript,
-        "score": score,
+        "score": score_breakdown["final_score"],
+        "score_breakdown": score_breakdown,
         "missing_information": report["missing_information"],
         "incorrect_information": report["incorrect_information"],
         "conflicting_information": report["conflicting_information"],

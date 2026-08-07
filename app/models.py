@@ -6,8 +6,24 @@ class EvaluationRequest(BaseModel):
     generated: str
 
 
+class ScoreCategory(BaseModel):
+    count: int
+    penalty: int
+    deduction: int
+
+
+class ScoreBreakdown(BaseModel):
+    starting_score: int
+    missing: ScoreCategory
+    incorrect: ScoreCategory
+    conflicting: ScoreCategory
+    extra: ScoreCategory
+    final_score: int
+
+
 class EvaluationResponse(BaseModel):
     score: int
+    score_breakdown: ScoreBreakdown
     missing_information: list
     incorrect_information: list
     conflicting_information: list
@@ -21,6 +37,7 @@ class TranscriptionResponse(BaseModel):
 class AudioEvaluationResponse(BaseModel):
     generated_transcript: str
     score: int
+    score_breakdown: ScoreBreakdown
     missing_information: list
     incorrect_information: list
     conflicting_information: list
