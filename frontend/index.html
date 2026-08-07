@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Transcript Evaluator</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+
+        <h1>AI Transcript Evaluator</h1>
+
+        <p class="subtitle">
+            Evaluate speech transcripts using <strong>Faster Whisper</strong> and
+            <strong>Gemini AI</strong>
+        </p>
+
+    </header>
+
+
+    <!-- ================= INPUT SECTION ================= -->
+
+    <section class="card">
+
+        <h2>Upload Audio</h2>
+
+        <input
+                type="file"
+                id="audioFile"
+                accept=".wav,.mp3,.mpeg,.m4a,.mp4"
+        >
+
+    </section>
+
+
+    <section class="card">
+
+        <h2>Ground Truth Transcript</h2>
+
+        <textarea
+                id="groundTruth"
+                placeholder="Paste the ground truth transcript here..."
+        ></textarea>
+
+    </section>
+
+
+    <button id="evaluateBtn">
+
+        Evaluate Audio
+
+    </button>
+
+
+
+    <!-- ================= RESULTS ================= -->
+
+    <section id="results">
+
+        <!-- Generated Transcript -->
+
+        <div class="card">
+
+            <h2>Generated Transcript</h2>
+
+            <div class="transcript-box">
+
+                <p id="generatedTranscript"></p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Overall Score + Breakdown -->
+
+        <div class="result-grid">
+
+            <!-- Score -->
+
+            <div class="card">
+
+                <h2>Overall Score</h2>
+
+                <div class="score-container">
+
+                    <h1 id="score">--</h1>
+
+                    <div class="progress-container">
+
+                        <div
+                                id="progressBar"
+                                class="progress-bar"
+                        ></div>
+
+                    </div>
+
+                    <p id="scoreMessage"></p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Score Breakdown -->
+
+            <div class="card">
+
+                <h2>Score Breakdown</h2>
+
+                <div id="scoreBreakdown"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Error Categories -->
+
+        <div class="result-grid">
+
+            <div class="card">
+
+                <h2>Incorrect Information</h2>
+
+                <div id="incorrectList"></div>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Missing Information</h2>
+
+                <div id="missingList"></div>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Extra Information</h2>
+
+                <div id="extraList"></div>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Conflicting Information</h2>
+
+                <div id="conflictingList"></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

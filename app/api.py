@@ -2,7 +2,15 @@ from pathlib import Path
 import shutil
 import tempfile
 
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import (
+    FastAPI,
+    File,
+    Form,
+    UploadFile,
+    HTTPException
+)
+
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.models import (
     EvaluationRequest,
@@ -22,6 +30,17 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 evaluator = EvaluatorService()
 scoring = ScoringService()
 whisper = WhisperService()
@@ -29,6 +48,7 @@ whisper = WhisperService()
 
 @app.get("/")
 def home():
+
     return {
         "message": "AI Transcript Evaluator API is running successfully!"
     }
@@ -36,6 +56,7 @@ def home():
 
 @app.get("/health")
 def health():
+
     return {
         "status": "healthy"
     }
@@ -47,23 +68,39 @@ def health():
 )
 async def transcribe(file: UploadFile = File(...)):
 
-    suffix = Path(file.filename).suffix
+    temp_path = None
 
-    with tempfile.NamedTemporaryFile(
-        delete=False,
-        suffix=suffix
-    ) as temp:
+    try:
 
-        shutil.copyfileobj(file.file, temp)
-        temp_path = Path(temp.name)
+        suffix = Path(file.filename).suffix
 
-    transcript = whisper.transcribe_audio(temp_path)
+        with tempfile.NamedTemporaryFile(
+            delete=False,
+            suffix=suffix
+        ) as temp:
 
-    temp_path.unlink()
+            shutil.copyfileobj(file.file, temp)
+            temp_path = Path(temp.name)
 
-    return {
-        "transcript": transcript
-    }
+        transcript = whisper.transcribe_audio(
+            temp_path
+        )
+
+        return {
+            "transcript": transcript
+        }
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+
+    finally:
+
+        if temp_path and temp_path.exists():
+            temp_path.unlink()
 
 
 @app.post(
@@ -72,18 +109,29 @@ async def transcribe(file: UploadFile = File(...)):
 )
 def evaluate(request: EvaluationRequest):
 
-    report = evaluator.evaluate(
-        request.ground_truth,
-        request.generated
-    )
+    try:
 
-    score_breakdown = scoring.get_score_breakdown(report)
+        report = evaluator.evaluate(
+            request.ground_truth,
+            request.generated
+        )
 
-    report["score"] = score_breakdown["final_score"]
+        score_breakdown = scoring.get_score_breakdown(
+            report
+        )
 
-    report["score_breakdown"] = score_breakdown
+        report["score"] = score_breakdown["final_score"]
 
-    return report
+        report["score_breakdown"] = score_breakdown
+
+        return report
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
 
 @app.post(
@@ -95,35 +143,72 @@ async def evaluate_audio(
     ground_truth: str = Form(...)
 ):
 
-    suffix = Path(file.filename).suffix
+    temp_path = None
 
-    with tempfile.NamedTemporaryFile(
-        delete=False,
-        suffix=suffix
-    ) as temp:
+    try:
 
-        shutil.copyfileobj(file.file, temp)
-        temp_path = Path(temp.name)
+        suffix = Path(file.filename).suffix
 
-    generated_transcript = whisper.transcribe_audio(
-        temp_path
-    )
+        with tempfile.NamedTemporaryFile(
+            delete=False,
+            suffix=suffix
+        ) as temp:
 
-    temp_path.unlink()
+            shutil.copyfileobj(file.file, temp)
+            temp_path = Path(temp.name)
 
-    report = evaluator.evaluate(
-        ground_truth,
-        generated_transcript
-    )
+        generated_transcript = whisper.transcribe_audio(
+            temp_path
+        )
 
-    score_breakdown = scoring.get_score_breakdown(report)
+        report = evaluator.evaluate(
+            ground_truth,
+            generated_transcript
+        )
 
-    return {
-        "generated_transcript": generated_transcript,
-        "score": score_breakdown["final_score"],
-        "score_breakdown": score_breakdown,
-        "missing_information": report["missing_information"],
-        "incorrect_information": report["incorrect_information"],
-        "conflicting_information": report["conflicting_information"],
-        "extra_information": report["extra_information"]
-    }
+        score_breakdown = scoring.get_score_breakdown(
+            report
+        )
+
+        return {
+
+            "generated_transcript": generated_transcript,
+
+            "score": score_breakdown["final_score"],
+
+            "score_breakdown": score_breakdown,
+
+            "missing_information":
+                report["missing_information"],
+
+            "incorrect_information":
+                report["incorrect_information"],
+
+            "conflicting_information":
+                report["conflicting_information"],
+
+            "extra_information":
+                report["extra_information"]
+
+        }
+
+    except Exception as e:
+
+        message = str(e)
+
+        if "RESOURCE_EXHAUSTED" in message:
+
+            raise HTTPException(
+                status_code=429,
+                detail="Gemini API quota exceeded. Please try again later."
+            )
+
+        raise HTTPException(
+            status_code=500,
+            detail=message
+        )
+
+    finally:
+
+        if temp_path and temp_path.exists():
+            temp_path.unlink()
