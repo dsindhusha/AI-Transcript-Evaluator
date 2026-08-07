@@ -1,11 +1,22 @@
+# Virtual Environment
 .venv/
 
+# Python Cache
 __pycache__/
-
 *.pyc
 
+# Environment Variables
 .env
 
-dataset/generated/
+# Generated Files
+dataset/generated/*
+!dataset/generated/.gitkeep
 
-dataset/reports/
+# Generated Reports
+dataset/reports/*
+!dataset/reports/.gitkeep
+
+# Temporary Files
+*.log
+*.tmp
+.DS_Store
