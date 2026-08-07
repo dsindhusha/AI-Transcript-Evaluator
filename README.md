@@ -133,16 +133,19 @@ AI-Transcript-Evaluator/
 │   ├── audio/
 │   ├── generated/
 │   ├── ground_truth/
-│   └── reports/
+│   ├── reports/
+│   └── test_cases.json
 │
 ├── frontend/
 │   ├── index.html
 │   ├── style.css
 │   └── script.js
 │
-├── requirements.txt
+├── .env                # Create this file locally (not committed)
+├── .gitignore
 ├── README.md
-└── .gitignore
+├── REPORT.md
+└── requirements.txt
 ```
 
 ---
